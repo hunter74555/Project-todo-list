@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Страница не найдена</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-card">
+            <div class="error-code">404</div>
+            <h1 class="error-title">Ой! Страница потерялась</h1>
+            <p class="error-message">
+                Кажется, мы не можем найти то, что вы ищете.
+                Возможно, страница была перемещена или больше не существует.
+            </p>
+            <a href="{{ url_for('todos.index') }}" class="error-btn">Вернуться на главную</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Привет, {{ current_user.username }}!</h1>
+            <a href="{{ url_for('auth.logout') }}" class="logout-btn">Выйти</a>
+        </header>
+
+        <form action="/add" method="POST" class="task-form">
+            <input type="text" name="task" placeholder="Новая задача" required>
+            <button type="submit">+</button>
+        </form>
+
+        <ul class="task-list">
+            {% for task in tasks %}
+                <li class="task-item {% if task.done %}completed{% endif %}">
+                    <span>{{ task.text }}</span>
+                    <div class="task-actions">
+                        <a href="/delete/{{ task.id }}" class="delete-btn">❌</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

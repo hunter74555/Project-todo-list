@@ -1,0 +1,35 @@
+# --- Python ---
+*.py[cod]  # Файлы кэша Python
+__pycache__/  # Папки с кэшем
+*.so  # Скомпилированные расширения
+.Python  # Специфичные для Python файлы
+.env
+.env/  # Виртуальное окружение (если называется env)
+.venv/  # Виртуальное окружение (если .venv)
+venv/  # Альтернативное название
+ENV/  # На всякий случай
+pip-selfcheck.json  # Файл проверки pip
+
+# --- Базы данных и логи ---
+*.db  # SQLite-базы (например, todos.db)
+*.sqlite3
+*.log  # Лог-файлы (todo.log)
+instance/  # Папка instance (обычно содержит конфиги и БД)
+
+# --- IDE ---
+.idea/  # JetBrains IDE
+.vscode/  # VSCode
+*.swp  # Vim/Neovim
+*.sublime-*
+
+# --- Миграции (если Alembic) ---
+migrations/versions/  # Автогенерируемые миграции (но сам alembic.ini и env.py оставляем!)
+
+# --- Прочее ---
+.DS_Store  # MacOS
+*.egg-info/  # Python package metadata
+dist/  # Собранные пакеты
+build/
+*.env  # Файлы окружения (лучше не коммитить!)
+.env.local
+*.pyc  # Дублируем на всякий случай
