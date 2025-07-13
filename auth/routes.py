@@ -22,7 +22,7 @@ def resend_confirmation():
     email = session.get('unconfirmed_email')
 
     if not email:
-        flash('Не удалось определить email для повторной отправки.', 'error')
+        flash(message='Не удалось определить email для повторной отправки.', category='error')
         return redirect(url_for('auth.login'))
 
     last_sent = session.get('last_confirmation_sent', 0)
@@ -32,14 +32,14 @@ def resend_confirmation():
     # Устанавливаем ограничение времени на повторную отправку письма
     if now - last_sent < cooldown:
         wait_time = int(cooldown - (now - last_sent))
-        flash(f'Пожалуйста, подождите {wait_time} секунд перед повторной отправкой.', 'warning')
+        flash(message=f'Пожалуйста, подождите {wait_time} секунд перед повторной отправкой.', category='warning')
         return redirect(url_for('auth.please_confirm'))
 
     token = generate_confirmation_token(email)
     send_confirmation_email(email, token)
 
     session['last_confirmation_sent'] = now
-    flash('Письмо с подтверждением отправлено повторно.', 'info')
+    flash(message='Письмо с подтверждением отправлено повторно.', category='info')
     return redirect(url_for('auth.please_confirm'))
 
 @auth_bp.route('/confirm/<token>')
@@ -50,11 +50,11 @@ def confirm_email(token):
 
     user = User.query.filter_by(email=email).first_or_404()
     if user.confirmed:
-        flash('Аккаунт уже подтверждён.', 'info')
+        flash(message='Аккаунт уже подтверждён.', category='info')
     else:
         user.confirmed = True
         db.session.commit()
-        flash('Спасибо! Ваш аккаунт подтверждён.', 'success')
+        flash(message='Спасибо! Ваш аккаунт подтверждён.', category='success')
 
     return redirect(url_for('auth.login'))
 
@@ -71,23 +71,23 @@ def register():
         email = request.form['email']
 
         if User.query.filter_by(username=username).first():
-            flash('Этот логин уже занят!', 'error')
+            flash(message='Этот логин уже занят!', category='error')
             return redirect(url_for('auth.register'))
 
         if User.query.filter_by(email=email).first():
-            flash('Этот email уже зарегистрирован!', 'error')
+            flash(message='Этот email уже зарегистрирован!', category='error')
             return redirect(url_for('auth.register'))
 
         if not re.match(EMAIL_REGEX, email):
-            flash('Введите корректный email.', 'error')
+            flash(message='Введите корректный email.', category='error')
             return redirect(url_for('auth.register'))
 
         if not domain_has_mx(email):
-            flash('Почтовый домен не найден. Проверьте email.', 'error')
+            flash(message='Почтовый домен не найден. Проверьте email.', category='error')
             return redirect(url_for('auth.register'))
 
         if len(password) < 8 or not re.search(r'[0-9]', password) or not re.search(r'[A-Za-z]', password):
-            flash('Пароль должен содержать минимум 8 символов, цифры и буквы.', 'error')
+            flash(message='Пароль должен содержать минимум 8 символов, цифры и буквы.', category='error')
             return redirect(url_for('auth.register'))
 
 
@@ -118,12 +118,12 @@ def login():
 
         if user and check_password_hash(user.password, password):
             if not user.confirmed:
-                flash('Пожалуйста, подтвердите ваш email, чтобы войти.', 'warning')
+                flash(message='Пожалуйста, подтвердите ваш email, чтобы войти.', category='warning')
                 return redirect(url_for('auth.please_confirm'))
             login_user(user)
             return redirect(url_for('todos.index'))
 
-        flash('Неверный логин/почта или пароль!', 'error')
+        flash(message='Неверный логин/почта или пароль!', category='error')
 
     return render_template('login.html')
 
